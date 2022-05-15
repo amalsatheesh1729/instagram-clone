@@ -1,2 +1,6 @@
 # instagram_clone
- Git Repository For Instagram Clone App
+ 
+ A full stack instagram clone with responsive layouts for android,ios and web.
+ Implemented using flutter & firebase.
+ 
+ 
