@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/Util/colors.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/resources/firesbase_firestore_methods.dart';
 import 'package:instagram_clone/screens/commentscreen.dart';
+import 'package:instagram_clone/screens/resuable_profile_screen.dart';
 import 'package:instagram_clone/widgets/like_animation.dart';
 import 'package:instagram_clone/widgets/postcard.dart';
 import 'package:intl/intl.dart';
 import 'package:instagram_clone/models/user.dart' as modeluser;
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -27,6 +30,7 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(context.mounted)
     getcommentcount();
   }
 
@@ -51,9 +55,16 @@ class _PostCardState extends State<PostCard> {
               padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    radius: 16,
-                    backgroundImage: NetworkImage(widget.snap['profileImage']),
+                  InkWell(
+                    onTap:(){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ProfileScreen(uid: widget.snap['uid']);
+                      }));
+                      },
+                    child: CircleAvatar(
+                      radius: 16,
+                      backgroundImage: NetworkImage(widget.snap['profileImage']),
+                    ),
                   ),
                   Expanded(
                       child: Padding(
@@ -137,6 +148,9 @@ class _PostCardState extends State<PostCard> {
                smalllike: true,
                child: IconButton(
                    onPressed: () async{
+                     if(!widget.snap['likes'].contains(user.uid))
+                       await FirebaseFireStoreStorage().addNotification(widget.snap['uid'],'${user.photourl}','${user.username} liked your post' ,'like');
+
                      await FirebaseFireStoreStorage().likepost(widget.snap['postId'], user.uid,widget.snap['likes']);
                    },
                    icon: widget.snap['likes'].contains(user.uid)? Icon(Icons.favorite, color:
@@ -182,7 +196,12 @@ class _PostCardState extends State<PostCard> {
                       ], style: TextStyle(color: primaryColor)),
                     )),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context)
+                    {
+                      return CommentScreen(snap:widget.snap);
+                    }));
+                  },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 4),
                     child: Text(

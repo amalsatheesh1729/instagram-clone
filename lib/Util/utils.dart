@@ -14,10 +14,12 @@ pickImage(ImageSource s) async
 
 }
 
-void showasnackbar (context,String s)
+void showasnackbar (BuildContext context,String s,Color c)
 {
    final snackBar = SnackBar(
+     backgroundColor: c,
     content: Text(s),
+     duration: Duration(seconds: 2),
   );
 ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

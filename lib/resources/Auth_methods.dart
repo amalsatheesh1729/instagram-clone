@@ -1,9 +1,11 @@
 //import 'dart:html';
 import 'dart:typed_data';
+import 'package:flutter/cupertino.dart';
+
+import '../models/user.dart';
 import 'firebase_storage_methods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' ;
-import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart' as modeluser;
 
 class AuthMethod
@@ -51,7 +53,7 @@ class AuthMethod
    return res;
   }
 
-   Future<modeluser.user>  userDetails() async
+   dynamic  userDetails() async
     {
      User fireuser=_auth.currentUser!;
 
@@ -60,5 +62,24 @@ class AuthMethod
 
     }
 
+   static Future<List<user>> getUsers() async
+  {
+    final userlist=<user>[];
+
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+        .collection('users').where('uid', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
+    List<DocumentSnapshot<Map<String, dynamic>>> docsnaplist = snapshot.docs;
+    docsnaplist.forEach((element)
+    {
+      final d=element.data()!;
+      userlist.add(user(uid: d['uid'], username: d['username'], bio: d['bio'], email: d['email'],
+          photourl: d['file']));
+    });
+    return userlist;
+  }
+
+  Future<void> signout() async {
+      await FirebaseAuth.instance.signOut();
+  }
 
 }

@@ -33,7 +33,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   String res= await FirebaseFireStoreStorage().addpost(t1.text, username, uid, userprofileimage, _pic!);
   if(res=="success")
     {
-      showasnackbar(context, "Post Addition is Success");
+      showasnackbar(context, "Post Addition is Success",Colors.green);
       setState(() {
         _pic=null;
         isloading=!isloading;
@@ -42,7 +42,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     }
   else
     {
-      showasnackbar(context,"Post Addition Failed");
+      showasnackbar(context,"Post Addition Failed",Colors.red);
       setState(() {
         isloading=!isloading;
         _pic=null;

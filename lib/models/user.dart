@@ -14,7 +14,7 @@ class user
   final List following;
 
   user({required this.uid,required  this.username,required  this.bio,required  this.email,
-    required this.photourl, required this.followers,required  this.following});
+    required this.photourl, this.followers=const [],this.following=const []});
 
   Map<String,dynamic> toJsonMap() {
     return {

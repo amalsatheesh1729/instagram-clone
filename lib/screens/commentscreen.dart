@@ -74,6 +74,7 @@ class _CommentScreenState extends State<CommentScreen> {
                  setState(() {
                    controller.text="";
                  });
+                 await FirebaseFireStoreStorage().addNotification(widget.snap['uid'],'${u.photourl}','${u.username} commented on your post' ,'comment');
               },
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 8,horizontal: 8),

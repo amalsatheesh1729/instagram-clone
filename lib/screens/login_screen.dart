@@ -10,7 +10,11 @@ import 'package:instagram_clone/resources/Auth_methods.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/Util/utils.dart';
 import 'package:instagram_clone/screens/home_screen.dart';
+import 'package:sign_button/constants.dart';
+import 'package:sign_button/create_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../resources/googlesignin.dart';
 import '../responsive/mobile_screen_layout.dart';
 import '../responsive/web_screen_layout.dart';
 
@@ -25,6 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailaddress=TextEditingController();
   TextEditingController _password=TextEditingController();
   bool isloading=false;
+
+  final Uri _url = Uri.parse('https://firebasestorage.googleapis.com/v0/b/instagram-clone-43bb4.appspot.com/o/arch2.png?alt=media&token=8de74753-6738-49fc-a23c-d21b825c6ae7');
 
   @override
   void initState() {
@@ -50,18 +56,21 @@ class _LoginScreenState extends State<LoginScreen> {
       isloading=false;
     });
     if(res=="success") {
-      showasnackbar(context, 'SIGNIN Success AYELLO');
+      showasnackbar(context, 'Sign-In is succesful !! ',Colors.green);
       Navigator.push(context, MaterialPageRoute(builder: (context)=>ResponsiveLayout(mobileScreenLayout: mobileScreenLayout(), webScreenLayout: webScreenLayout())
       ));
     }
     else {
-      showasnackbar(context, res);
+      showasnackbar(context, res,Colors.red);
     }
   }
 
   void navigateToSignUp()
   {
-   Navigator.push(context, MaterialPageRoute(builder: (context)
+   Navigator.push(context, MaterialPageRoute(
+       settings: RouteSettings(),
+       
+       builder: (context)
    {
     return LogUpScreen();
    }));
@@ -127,11 +136,56 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontWeight: FontWeight.bold
                       ),)),
                 )
+
               ],
-            )
+            ),
+            SizedBox(height: 20,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Flexible(
+                  child: SignInButton(
+                      buttonType: ButtonType.google,
+                      padding: 7,
+                      btnText: 'Google ',
+                      onPressed: () async{
+                        await signInWithGoogle();
+                        showasnackbar(context, 'Google sign in succesful',Colors.green);
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ResponsiveLayout(mobileScreenLayout: mobileScreenLayout(), webScreenLayout: webScreenLayout())
+                        ));
+                      }),
+                ),
+                Flexible(
+                  child:SignInButton(
+                    buttonType: ButtonType.facebook,
+                      padding: 7,
+                      btnText: 'Facebook',
+                    onPressed: () async{
+                      await signInWithFacebook();
+                      showasnackbar(context, 'Facebook sign in succesful',Colors.green);
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ResponsiveLayout(mobileScreenLayout: mobileScreenLayout(), webScreenLayout: webScreenLayout())));
+                    }))
+              ],
+            ),
+              SizedBox(height: 120),
+              Divider(),
+              TextButton(onPressed: (){
+                launchUrl(_url);
+              }, child: Text('Architecture' ,style: TextStyle(
+                color: Colors.blue
+              ),))
           ],
         )),
       ),
     );
   }
+
+
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
 }

@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1042127817804:android:9d1512f88bb11f4abfb8e9",
+        "mobilesdk_app_id": "1:1042127817804:android:7568ddb4429d73eebfb8e9",
         "android_client_info": {
           "package_name": "com.example.instagram_clone"
         }
@@ -29,6 +29,13 @@
             {
               "client_id": "1042127817804-mr64ifea081q0ilgqed5leqnna08gqog.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1042127817804-oaa9qbd6gnhqmplrdk83em2ihhjnbf9n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.instagramClone"
+              }
             }
           ]
         }

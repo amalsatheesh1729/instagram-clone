@@ -34,11 +34,11 @@ class _CommentCardState extends State<CommentCard> {
                   text: TextSpan(
                     children: [TextSpan(
                         text: '${widget.snap['username']} :      ',
-                        style: TextStyle(fontWeight: FontWeight.bold)
+                        style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)
                     ),
                       TextSpan(
                           text: widget.snap['text'],
-                          style: TextStyle(fontWeight: FontWeight.bold)
+                          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white)
                       )
                     ]
                 ),),
@@ -52,7 +52,7 @@ class _CommentCardState extends State<CommentCard> {
           ),
           Container(
             padding: EdgeInsets.all(18),
-            child: Icon(Icons.favorite,size: 16),
+            child: Icon(Icons.favorite,size: 16,color: Colors.red,),
           )
         ],
       ),
